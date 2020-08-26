@@ -1,4 +1,3 @@
-TOKEN = "REPLACE TOKEN"
 import discord
 import utils.openCV
 
@@ -20,10 +19,10 @@ async def on_message(message):
     if len(message.attachments) > 0:
         ## Attachment found
         imageURL = message.attachments[0].url
-        await utils.openCV.url_to_image(imageURL)
+        await utils.openCV.image_manipulation(imageURL)
 
     else:
         ## No attachment found
         return
 
-client.run(TOKEN)
+client.run(bot_token)
