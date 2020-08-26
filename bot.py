@@ -1,5 +1,5 @@
 import discord
-import utils.openCV
+import utils.title
 
 client = discord.Client()
 
@@ -19,7 +19,7 @@ async def on_message(message):
     if len(message.attachments) > 0:
         ## Attachment found
         imageURL = message.attachments[0].url
-        await utils.openCV.image_manipulation(imageURL)
+        await utils.title.get_title(imageURL)
 
     else:
         ## No attachment found
