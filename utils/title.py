@@ -38,5 +38,5 @@ async def get_title_ROI(image):
     title = image[50:80, width-440:width-90]
 
     ret, thresh = cv2.threshold(title,127,255,cv2.THRESH_BINARY_INV)
-    print(ret)
+    print(f'Ignore this, was just to get rid of the variable not used error: {ret}')
     return thresh
