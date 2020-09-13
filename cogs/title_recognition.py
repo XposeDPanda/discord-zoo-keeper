@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 from utils import title
+from utils.storage import Storage
+Storage = Storage()
 
 class title_recognition(commands.Cog):
     def __init__(self, client):
@@ -8,12 +10,17 @@ class title_recognition(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Role Recognition - Available.')
+        print('Title Recognition - Available.')
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
+        
         if not ctx.channel.name == "role-request":
             ### Ignores any message outside of this channel
+            return
+
+        if Storage.isEnabled(ctx.guild, 'titleRecog') == False:
+            ### Checks if module is enabled
             return
 
         if ctx.author.bot:
@@ -25,7 +32,7 @@ class title_recognition(commands.Cog):
             titleStr = await title.get_title(imageURL)
             if titleStr == 'Pirate Legend':
                 try:
-                    role = discord.utils.get(ctx.guild.roles, name=title)
+                    role = discord.utils.get(ctx.guild.roles, name=titleStr)
                     await ctx.author.add_roles(role)
                     await ctx.add_reaction('\U0001f44d')
                     return

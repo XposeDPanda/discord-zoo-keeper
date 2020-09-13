@@ -4,7 +4,10 @@ This discord bot was built to automate the boring task of asking people to make 
 
 ## Installation
 
-I won't lie. I completely forgot to add a requirements.txt for the packages, and due to tesseract I highly recommend just inviting the already hosted bot to your server however if you really want to fork the repo and continue this on your own to make edits feel free.
+I do not recommend hosting this bot yourself, invite the currently hosted bot using this link: [will be added later]
+
+# Quick Guide - incomplete
+Install python 3.8, I recommend getting pipenv and starting a new virtual environment as that way you can easily read from the pipfile. Once this has been done run pipenv install to install all dependencies, then enter the virtual environment you created before by running pipenv shell, you can then start the bot by typing python bot.py within the shell you just started.
 
 ## Contribution
 
