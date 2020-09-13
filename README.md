@@ -6,7 +6,7 @@ This discord bot was built to automate the boring task of asking people to make 
 
 I do not recommend hosting this bot yourself, invite the currently hosted bot using this link: [will be added later]
 
-# Quick Guide - incomplete
+### Quick Guide - incomplete
 Install python 3.8, I recommend getting pipenv and starting a new virtual environment as that way you can easily read from the pipfile. Once this has been done run pipenv install to install all dependencies, then enter the virtual environment you created before by running pipenv shell, you can then start the bot by typing python bot.py within the shell you just started.
 
 ## Contribution
