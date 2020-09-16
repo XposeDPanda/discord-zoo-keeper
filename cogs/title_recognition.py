@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
 from utils import title
-from utils.storage import Storage
-Storage = Storage()
 
 class title_recognition(commands.Cog):
     def __init__(self, client):

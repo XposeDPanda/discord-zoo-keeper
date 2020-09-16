@@ -5,6 +5,7 @@
 #Any queries feel free to message me on discord.
 
 import os
+import time, datetime
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -12,8 +13,7 @@ import discord
 from discord.ext import commands
 client = commands.Bot(command_prefix="!", help_command=None, case_insensitive=True)
 
-from utils.storage import Storage
-Storage = Storage()
+startTime = time.time()
 
 ### Events listeners ###
 @client.event
@@ -38,36 +38,77 @@ async def on_message(message):
 
 
 
+## on guild specific stuff ##
 
-## on guild join ##
-@client.event
-async def on_guild_join(guild):
-    try:
-        Storage.add_guild(guild)
-    except Exception as err:
-        print(err)
 
-@client.command()
-async def resetconfig(ctx):
-    try:
-        Storage.add_guild(ctx.guild)
-    except Exception as err:
-        print(err)
+# DEV COMMAND to mimic joining/leaving of guild
+
 
 
 
 
 ### Misc/General Commands ###
-@client.command()
+@client.command(usage=None)
 async def ping(ctx):
-    await ctx.channel.send(f'Pong! {round(client.latency * 1000)}ms')
+    await ctx.channel.send(f'🏓Pong! {round(client.latency * 1000)}ms')
 
+@client.command(usage=None)
+async def uptime(ctx):
+    curTime = time.time()
+    timeDif = int(round(curTime - startTime))
+    try:
+        await ctx.channel.send(f'The bot has been up for: {datetime.timedelta(seconds=timeDif)}')
+    except Exception as e:
+        await ctx.channel.send(e)
 
+@client.command(usage='[module]')
+async def help(ctx,*cogName):
+    try:
+        helpEmbed = discord.Embed(title="Help.",
+                                color=discord.Color(0x049bff),
+                                description=f'For more information about a specific module try: !help [module] (Case sensitive)')
+        if len(cogName) > 1:
+            helpEmbed = discord.Embed(title="Error!",
+                                    color=discord.Color.red(),
+                                    description='Please only enter one module.')
+            await ctx.channel.send(embed=helpEmbed)
+        if not cogName:
+            cogList = ''
+            for cog in client.cogs:
+                if len(client.get_cog(cog).get_commands()) > 0:
+                    cogList += f'{cog} \n'
+            helpEmbed.add_field(name='Modules', value=cogList, inline=False)
+            cmdList = ''
+            for cmd in client.walk_commands():
+                if not cmd.usage:
+                    usage = f'{client.command_prefix}{cmd.name}'
+                else:
+                    usage = f'{client.command_prefix}{cmd.name} {cmd.usage}'
+                if not cmd.hidden and not cmd.cog_name:
+                    cmdList += f'{cmd.name} - {usage} \n'
+            helpEmbed.add_field(name='General Commands', value=cmdList, inline=False)
+            await ctx.channel.send(embed=helpEmbed)
+        else:
+            cmdList = ''
+            if len(client.get_cog(cogName[0]).get_commands()) > 0:
+                for cmd in client.get_cog(cogName[0]).get_commands():
+                    if not cmd.usage:
+                        usage = f'{client.command_prefix}{cmd.name}'
+                    else:
+                        usage = f'{client.command_prefix}{cmd.name} {cmd.usage}'
+                    if not cmd.hidden:
+                        cmdList += f'{cmd.name} - {usage} \n'
+            else:
+                cmdList = f'This module does not have any discord commands'
+            helpEmbed.add_field(name=f'{cogName[0]} Module', value=cmdList, inline=False)
+            await ctx.channel.send(embed=helpEmbed)
+    except Exception as e:
+        await ctx.channel.send(e)
 
 
 ###### Manual Loading/Unloading of Cogs #####
 @commands.is_owner()
-@client.command()
+@client.command(hidden=True)
 async def load(ctx, extension: str):
     try:
         client.load_extension(f'cogs.{extension}')
@@ -79,7 +120,7 @@ async def load(ctx, extension: str):
 
 
 @commands.is_owner()
-@client.command()
+@client.command(hidden=True)
 async def unload(ctx, extension: str):
     try:
         client.unload_extension(f'cogs.{extension}')
@@ -91,7 +132,7 @@ async def unload(ctx, extension: str):
 
 
 @commands.is_owner()
-@client.command()
+@client.command(hidden=True)
 async def reload(ctx, extension: str):
     try:
         client.unload_extension(f'cogs.{extension}')
