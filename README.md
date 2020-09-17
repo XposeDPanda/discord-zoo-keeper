@@ -1,6 +1,6 @@
-# Title Recognition Bot
+# Discord Zoo Keeper
 
-This discord bot was built to automate the boring task of asking people to make sure they have the pirate legend title equipped when asking for the role in certain Sea of Thieves discord communities.
+This discord bot was built to automate the boring task of asking people to make sure they have the pirate legend title equipped when asking for the role in certain Sea of Thieves discord communities. It's new purpose is to be used as a muilti-module discord bot that ranges from administration to auto voice channel generation.
 
 ## Installation
 
