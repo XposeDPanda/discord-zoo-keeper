@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
-from utils import title
+from utils import title, storage
+Storage = storage.Storage()
 
 class title_recognition(commands.Cog):
     def __init__(self, client):
@@ -12,12 +13,11 @@ class title_recognition(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
-        
         if not ctx.channel.name == "role-request":
             ### Ignores any message outside of this channel
             return
 
-        if Storage.isEnabled(ctx.guild, 'titleRecog') == False:
+        if Storage.isEnabled(ctx.guild, 'TitleRecog') == False:
             ### Checks if module is enabled
             return
 
