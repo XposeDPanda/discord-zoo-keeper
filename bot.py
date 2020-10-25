@@ -9,6 +9,10 @@ import time, datetime
 from dotenv import load_dotenv
 load_dotenv()
 
+from utils import storage
+
+Storage = storage.Storage()
+
 import discord
 from discord.ext import commands
 client = commands.Bot(command_prefix="!", help_command=None, case_insensitive=True)
@@ -42,7 +46,17 @@ async def on_message(message):
 
 
 # DEV COMMAND to mimic joining/leaving of guild
+@client.command(usage=None)
+async def addGuild(ctx):
+    Storage.addGuild(ctx.message.guild)
 
+@client.command(usage=None)
+async def leaveGuild(ctx):
+    Storage.leaveGuild(ctx.message.guild)
+
+@client.command(usage='module')
+async def toggle(ctx, module):
+    Storage.toggleModule(ctx.message.guild, module)
 
 
 

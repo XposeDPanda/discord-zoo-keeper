@@ -11,6 +11,7 @@ python-dotenv = "*"
 pytesseract = "*"
 opencv-python = "*"
 mysql-connector-python = "*"
+dnspython = "*"
 
 [requires]
 python_version = "3.8"
