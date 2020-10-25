@@ -1,7 +1,4 @@
 # Ignore the bots token file
-tokens.txt
-
-#Ignore VSCode specific settings
 .vscode/*
 
 # Byte-compiled / optimized / DLL files
