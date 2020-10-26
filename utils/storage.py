@@ -30,10 +30,18 @@ class Storage:
         cursor.close()
         return row
 
+    def isEnabled(self, guild: discord.Guild, module: str):
+        query = f'SELECT {module} FROM modules WHERE GuildID = {guild.id}'
+        result = self.executeSingleQuery(query)
+        if(result[0] == 1):
+            return True
+        else:
+            return False
+
     def addGuild(self, guild: discord.Guild):
         query = f'INSERT INTO guilds (GuildID) VALUES ({guild.id})'
         self.executeSingleQuery(query)
-        query = f'INSERT INTO modules (GuildID, titleRecog, AmongUs) VALUES ({guild.id},{1},{0},{0},{0})'
+        query = f'INSERT INTO modules (GuildID, mMderation, titleRecog, AmongUs) VALUES ({guild.id},{1},{0},{0})'
         self.executeSingleQuery(query)
 
     def leaveGuild(self, guild: discord.Guild):
@@ -48,11 +56,11 @@ class Storage:
         else:
             query = f'UPDATE modules SET {module} = 1 WHERE GuildID = {guild.id}'
         self.executeSingleQuery(query)
+
+    def addWarn(self, warnID: str, guildID, user: discord.Member, wMsg):
+        query = f'INSERT INTO warnings (WarnID, GuildID, User, Reason) VALUES ("{warnID}","{guildID}","{user.name}","{wMsg}")'
+        self.executeSingleQuery(query)
     
-    def isEnabled(self, guild: discord.Guild, module: str):
-        query = f'SELECT {module} FROM modules WHERE GuildID = {guild.id}'
-        result = self.executeSingleQuery(query)
-        if(result[0] == 1):
-            return True
-        else:
-            return False
+    def removeWarn(self, warnID: str, guildID: str):
+        query = f'DELETE FROM warnings WHERE WarnID = "{warnID}" AND GuildID = {guildID}'
+        self.executeSingleQuery(query)
